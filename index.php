@@ -36,7 +36,8 @@
             $username = $_GET["username"];
             $password = $_GET["password"];
 
-            $sql = "SELECT * FROM `uzsiregistrave vartotojai` WHERE slapyvardis='$username' AND slaptazodis='$password'"; //pasirinks visus duomenis kurie yra vartotoju lenteleje
+            $sql = "SELECT * FROM `uzsiregistrave vartotojai` 
+            WHERE slapyvardis='$username' AND slaptazodis='$password'"; //pasirinks visus duomenis kurie yra vartotoju lenteleje
 
             //Uzklausa grazins 1 rezultata
             //Jeigu neteisinga, sita uzklausa mums grazins 0/false
