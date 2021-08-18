@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 
-<?php require_once("linkai.php"); ?>
+    <?php require_once("linkai.php"); ?>
     
     <style>
         h1 {
@@ -31,46 +31,31 @@
 
 <?php 
     if(isset($_GET["submit"])) { 
-        if(isset($_GET["name"]) && !empty($_GET["name"])
-        && isset($_GET["username"]) && !empty($_GET["username"])
-        && isset($_GET["password"]) && !empty($_GET["password"])
-        && isset($_GET["repeat-password"]) && !empty($_GET["repeat-password"])) {
-        
+       // atlikti tikrinima del uzpildymo
 
- 
         //pasiimti varda, slapyvardi, abu slaptazodzius, aprasyma
         //Slapyvardi(elektronini pasta) mes turetume patikrinti ar tokio zmogaus jau duomenu nera x
-       // irasas turetu prisideti i duomenu baze
-        $name =$_GET["name"];
-        $username =$_GET["username"];
-        $password =$_GET["password"];
-        $repeat_password = $_GET["repeat-password"];
-        $description = $_GET["description"];
-    
-        // tikriname irasus su duomenu baze 
-        $sql = "SELECT * FROM `uzsiregistrave vartotojai` WHERE slapyvardis='$username' ";
-        
-        // pagal uzklausa gausime objekta kuriema yra nurodytas kintamasis
-        // kuris parodo kiek rezultato eiluciu gauta 
-        $result = $conn->query($sql);
-      
-       // objekta kuriame
-       //yra nurodytas kintamasis, kuris parodo kiek eiluciu rezultato yra gauta
-    }
-       $class= "danger";
+       // musu irasas turetu prisideti i duomenu baze
+       
+       $name =$_GET["name"];
+       $username =$_GET["username"];
+       $password =$_GET["password"];
+       $repeat_password = $_GET["repeat-password"];
+       $description = $_GET["description"];
 
-       // jeigu kintamasis yra- gaunama eilutes skaicius 
+       //
+       $sql = "SELECT * FROM `uzsiregistrave vartotojai` WHERE slapyvardis='$username' ";
+       $result = $conn->query($sql);// objekta kuriame
+       //yra nurodytas kintamasis, kuris parodo kiek eiluciu rezultato yra gauta
+       $class= "danger";
        if($result->num_rows == 1) {
            $message = "Toks vartotojas duomenu bazėje jau yra";
-        } else {
-            if($password==$repeat_password){
-                
-                $sql = "INSERT INTO `uzsiregistrave vartotojai`(`vardas`, `slapyvardis`, 
-                `slaptazodis`, `teises_id`, `aprasymas`) 
-                VALUES ('$name','$username','$password',1,'$description')";
-                // kiekvienas naujai sukurtas vartotojas- gauna 1 
+       } else {
+          if($password==$repeat_password){
             
-            // vykdome uzklausa duomenu ikelimui 
+            $sql = "INSERT INTO `uzsiregistrave vartotojai`(`vardas`, `slapyvardis`, `slaptazodis`, `teises_id`, `aprasymas`) 
+            VALUES ('$name','$username','$password',1,'$description')";
+
             if(mysqli_query($conn, $sql)) {
                 $class= "success";
                 $message = "Vartotojas sukurtas sekmingai";
@@ -89,20 +74,18 @@
 ?>
 
 <div class="container">
-    <h1>Registracija</h1>
-    <form action="register.php" method="get">
-            
+        <h1>Registracija</h1>
+        <form action="register.php" method="get">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input class="form-control" type="text" name="name" required="true" value="<?php 
-                        if(isset($name)) {
-                            echo $name;
-                        } else {
-                            echo "";
-                        }
-                    ?>" />
+                    if(isset($name)) {
+                        echo $name;
+                    } else {
+                        echo "";
+                    }
+                ?>" />
             </div>
-
             <div class="form-group">
                 <label for="username">Username</label>
                 <input class="form-control" type="text" name="username" required="true" value="<?php 
@@ -113,19 +96,17 @@
                     }
                 ?>"/>
             </div>
-
             <div class="form-group">
                 <label for="password">Password</label>
                 <input class="form-control" type="password" name="password" required="true" />
             </div>
-
             <div class="form-group">
                 <label for="repeat-password">Repeat Password</label>
                 <input class="form-control" type="password" name="repeat-password" required="true" />
             </div>
 
             <div class="form-group">
-                <label for="description">Description about client</label>
+                <label for="description">Description</label>
                 <textarea class="form-control" type="password" name="description">
                     <?php 
                     if(isset($description)) {
