@@ -7,9 +7,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
 
-    <?php require_once("linkai.php");?>
+<?php require_once("linkai.php");?>
     
     <style>
         h1 {
@@ -25,10 +25,10 @@
     </style>
 </head>
 <body>
-    
+
     <?php
     //Klientu valdymas + vartotoju valdymas
-
+    // 08-16 dienos irasas 
     //1. Prisijungimas naudojant duomenu baze
     // Lenteles su kazkokiais tai testiniais duomenimis
     if(isset($_GET["submit"])) {
@@ -44,6 +44,8 @@
             $result = $conn->query($sql); // yra vykdoma uzklasa is DB
             // siuo atveju rezult yra objektas su eilutemis (kintamaisiais)
 
+            // jeigu eiluteje isvedami duomenis- 1 ar kitas sk- vadinasi viskas ok, klientas egzistuoja
+            // jeigu num_rows grazintu 0- vadinasi duomenys suvesti neteisingai arba tokio kliento nera
             if($result->num_rows == 1) {
                 $user_info=mysqli_fetch_array($result);
                 $cookie_array=array(
@@ -52,11 +54,11 @@
                         $user_info["vardas"],
                         $user_info["teises_id"],
                     ); 
+                // paverciam masyva i teksta, gal galetume nustatyti cookies
                 $cookie_array =implode("|", $cookie_array);
                 setcookie("prisijungta", $cookie_array, time() +3600, "/" ); 
-                    //is gauto rezultato mes turetume pasiimti ID.
-                    //is gauto rezultato mes turetume pasiimti ID, slapyvardi, varda ir teises
-                    //ir situos duomenis mes turetume isaugoti i COOKies.
+                    //is gauto rezultato mes turetume pasiimti ID.uztenka ID nes jis nekinta
+                    //duomenis mes turetume isaugoti i COOKies.
                     header("Location: clients.php");
 
                 } else {
@@ -92,20 +94,19 @@
                 <input class="form-control" type="password" name="password" />
             </div>
 
-
             <a href="register.php">Register here</a><br>
             <button class="btn btn-primary" type="submit" name="submit">Log In</button>
         </form>
 
-        <?php if(isset($message)) { ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $message; ?>
-            </div>
-
-        <?php } ?>
+            <?php if(isset($message)) { ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $message; ?>
+                </div>
+            <?php } ?>
     </div>
 
-    <?php } else {
+
+    <?php } else { // jeigu yra prisijungta- t.y. issaugotas cookies, nukreipiama i clients psl
         header ("Location:clients.php");
     } ?>
 
