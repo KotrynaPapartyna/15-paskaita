@@ -23,7 +23,7 @@
             $pavarde = "Pavarde".$i;
             $teises_id = rand(0, 5);
 
-            $sql = "INSERT INTO `klientai`(`Vardas`, `Pavarde`, `Teises_ID`) 
+        $sql = "INSERT INTO `klientai`(`Vardas`, `Pavarde`, `Teises_ID`) 
             VALUES ('$vardas','$pavarde','$teises_id')";
 
             if(mysqli_query($conn, $sql)) {

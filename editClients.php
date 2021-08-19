@@ -57,7 +57,7 @@ if(isset($_GET["ID"])) {
 if(isset($_GET["submit"])) {
     //Turime pasiimti visus kintamuosius
     //Kokia uzklausa atlikti? UPDATE
-    if(isset($_GET["Vardas"]) && isset($_GET["Pavarde"]) && isset($_GET["Teises_ID"]) 
+    if(isset($_GET["Vardas"]) && isset($_GET["pavarde"]) && isset($_GET["Teises_ID"]) 
     && !empty($_GET["Vardas"]) && !empty($_GET["Pavarde"]) && !empty($_GET["Teises_ID"])) {
         $id = $_GET["ID"];
         $vardas = $_GET["Vardas"];
@@ -82,6 +82,7 @@ if(isset($_GET["submit"])) {
 
         $sql = "UPDATE `klientai` SET `Vardas`='$vardas',
         `Pavarde`='$pavarde',`Teises_ID`=$teises_id WHERE ID = $id";
+
         if(mysqli_query($conn, $sql)) {
             $message =  "Vartotojas redaguotas sėkmingai";
             $class = "success";
@@ -95,24 +96,24 @@ if(isset($_GET["submit"])) {
 ?>
 
 <div class="container">
-        <h1>Kliento redagavimas</h1>
+        <h1>Vartotojo redagavimas</h1>
         <?php if($hideForm == false) { ?>
-            <form action="editClients.php" method="get">
+            <form action="clientsEdit.php" method="get">
                 
                 <input class="hide" type="text" name="ID" value ="<?php echo $client["ID"]; ?>" />
 
                 <div class="form-group">
                     <label for="Vardas">Vardas</label>
-                    <input class="form-control" type="text" name="Vardas" value="<?php echo $client["vardas"]; ?>" />
+                    <input class="form-control" type="text" name="Vardas" value="<?php echo $client["Vardas"]; ?>" />
                 </div>
                 <div class="form-group">
                     <label for="Pavarde">Pavardė</label>
-                    <input class="form-control" type="text" name="Pavarde" value="<?php echo $client["pavarde"]; ?>"/>
+                    <input class="form-control" type="text" name="Pavarde" value="<?php echo $client["Pavarde"]; ?>"/>
                 </div>
 
                 <div class="form-group">
                     <label for="Teises_ID">Teisės</label>
-                    <input class="form-control" type="text" name="Teises_ID" value="<?php echo $client["teises_id"]; ?>"/>
+                    <input class="form-control" type="text" name="Teises_ID" value="<?php echo $client["Teises_ID"]; ?>"/>
                 </div>
 
                 <a href="clients.php">Back</a><br>
