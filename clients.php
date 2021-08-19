@@ -15,10 +15,14 @@
 </head>
 <body>
     <div class="container">
+    
+    <?php require_once("includes/menu.php");?>  
+
 <?php 
 
 if(!isset($_COOKIE["prisijungta"])) { 
-    header("Location: index.php");    
+    header("Location: index.php"); 
+
 } else {
     echo "Sveikas prisijunges";
     echo "<form action='clients.php' method ='get'>";
@@ -44,13 +48,33 @@ if(isset($_GET["ID"])) {
         $class="danger";
     }
 }
-
 ?>
-<?php if(isset($message)) { ?>
+
+<?php if(isset($message)) { ?> <!--isvedama zinute-->
     <div class="alert alert-<?php echo $class; ?>" role="alert">
         <?php echo $message; ?>
     </div>
 <?php } ?>
+
+
+<!-- paieskos mygtuko paspaudimas-->
+<?php if(isset($_GET["search"]) && !empty($_GET["search"])) { ?>
+    <a class="btn btn-primary" href="clients.php"> Išvalyti paiešką</a>
+<?php } ?>
+
+<!-- rusiavimo nustatymo forma-->
+<form action="clients.php" method="get">
+
+    <div class="form-group">
+        <select class="form-control" name="rikiavimas_id">
+            <option value="DESC"> Nuo didžiausio iki mažiausio</option>
+            <option value="ASC"> Nuo mažiausio iki didžiausio</option>
+        </select>
+        <button class="btn btn-primary" name="rikiuoti" type="submit">Rikiuoti</button>
+    </div>
+
+</form>     
+
 
 <table class="table table-striped">
   <thead>
@@ -63,38 +87,70 @@ if(isset($_GET["ID"])) {
     </tr>
   </thead>
   <tbody>
-    <?php 
 
-    $sql = "SELECT * FROM `klientai` ORDER BY `ID` DESC"; 
-    $result = $conn->query($sql); // uzklausos vykdymas
+
+<?php 
+    
+if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
+        $rikiavimas = $_GET["rikiavimas_id"];
+    } else {
+        $rikiavimas = "DESC"; // nuo didziausio 
+    }
+
+    $sql = "SELECT * FROM `klientai` ORDER BY `ID` $rikiavimas"; 
+
+    if(isset($_GET["search"]) && !empty($_GET["search"])) {
+        $search = $_GET["search"];
+        $sql = "SELECT * FROM `klientai` WHERE `vardas` LIKE '%".$search."%' OR `pavarde` LIKE '%".$search."%' ORDER BY `ID` $rikiavimas";
+    }
+    $result = $conn->query($sql); 
     
     while($clients = mysqli_fetch_array($result)) {
         echo "<tr>";
             echo "<td>". $clients["ID"]."</td>";
-            echo "<td>". $clients["Vardas"]."</td>";
-            echo "<td>". $clients["Pavarde"]."</td>";
-            //ifa/switch
-            switch($clients["Teises_ID"]) {
-                case 0:
-                    echo "<td>Naujas klientas</td>";     
-                break;
-                case 1:
-                    echo "<td>Ilgalaikis klientas</td>";
-                break;
-                case 2:
-                    echo "<td>Neaktyvus klientas</td>";
-                break;
-                case 3:
-                    echo "<td>Nemokus klientas</td>";
-                break;
-                case 4:
-                    echo "<td>Uzsienio(Ne EU) klientas</td>";
-                break;
-                case 5:
-                    echo "<td>Uzsienio(EU) klientas</td>";
-                break;
-                default: echo "<td>Nepatvirtintas klientas</td>";
-            }    
+            echo "<td>". $clients["vardas"]."</td>";
+            echo "<td>". $clients["pavarde"]."</td>";
+
+            //vykdoma uzklausa is duomenu bazes pagal teises_id
+                $teises_id=$clients["teises_id"];
+                $sql="SELECT * FROM klientai_teises WHERE reiksme=$teises_id"; 
+            // gausime 1 irasa 
+                $result_teises = $conn->query($sql); // vykdoma uzklausa 
+            // programiskai vykdomas lenteliu sujungimas
+            // kad nebutu taip- pakeiciamas kintamasis i kitoki
+
+                if ($result_teises->num_rows==1) {
+                    $rights=mysqli_fetch_array($result_teises); 
+                    echo "<td>";
+                        echo $rights["pavadinimas"]; 
+                    echo "</td>";
+                } else {
+                    echo "<td>Nepatvirtintas klientas</td>";
+                }
+
+
+            //ifa/switch/ turi buti atvaizdavimas pagal DB
+            //switch($clients["Teises_ID"]) {
+                //case 0:
+                    //echo "<td>Naujas klientas</td>";     
+                //break;
+                //case 1:
+                    //echo "<td>Ilgalaikis klientas</td>";
+                //break;
+                //case 2:
+                    //echo "<td>Neaktyvus klientas</td>";
+                //break;
+                //case 3:
+                    //echo "<td>Nemokus klientas</td>";
+                //break;
+                //case 4:
+                    //echo "<td>Uzsienio(Ne EU) klientas</td>";
+                //break;
+                //case 5:
+                    //echo "<td>Uzsienio(EU) klientas</td>";
+                // break;
+                //default: echo "<td>Nepatvirtintas klientas</td>";
+            //}    
 
             
             echo "<td>";

@@ -19,11 +19,11 @@
     if(isset($_GET["submit"])) {
         for ($i=0; $i<200; $i++) {
 
-            $vardas = "Vardas".$i;
-            $pavarde = "Pavarde".$i;
+            $vardas = "vardas".$i;
+            $pavarde = "pavarde".$i;
             $teises_id = rand(0, 5);
 
-        $sql = "INSERT INTO `klientai`(`Vardas`, `Pavarde`, `Teises_ID`) 
+        $sql = "INSERT INTO `klientai`(`vardas`, `pavarde`, `teises_id`) 
             VALUES ('$vardas','$pavarde','$teises_id')";
 
             if(mysqli_query($conn, $sql)) {

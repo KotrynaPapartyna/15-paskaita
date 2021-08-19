@@ -31,7 +31,12 @@
 
 </head>
 <body>
+
 <?php 
+
+    if (isset($_COOKIE["prisijungta"])) {
+        header ("Location:index.php");
+    }
 
 //mes pagal ID turetume isvesti visus duomenis i input apie klienta
 //ir naujus duomenis per UPDATE sukelti i duomenu baze
@@ -57,15 +62,15 @@ if(isset($_GET["ID"])) {
 if(isset($_GET["submit"])) {
     //Turime pasiimti visus kintamuosius
     //Kokia uzklausa atlikti? UPDATE
-    if(isset($_GET["Vardas"]) && isset($_GET["pavarde"]) && isset($_GET["Teises_ID"]) 
-    && !empty($_GET["Vardas"]) && !empty($_GET["Pavarde"]) && !empty($_GET["Teises_ID"])) {
+    if(isset($_GET["vardas"]) && isset($_GET["pavarde"]) && isset($_GET["teises_id"]) 
+    && !empty($_GET["vardas"]) && !empty($_GET["pavarde"]) && !empty($_GET["teises_id"])) {
         $id = $_GET["ID"];
-        $vardas = $_GET["Vardas"];
-        $pavarde = $_GET["Pavarde"];
-        $teises_id = intval($_GET["Teises_ID"]);
+        $vardas = $_GET["vardas"];
+        $pavarde = $_GET["pavarde"];
+        $teises_id = intval($_GET["teises_id"]);
 
-        $sql = "UPDATE `klientai` SET `Vardas`='$vardas',
-        `Pavarde`='$pavarde',`Teises_ID`=$teises_id WHERE ID = $id";
+        $sql = "UPDATE `klientai` SET `vardas`='$vardas',
+        `pavarde`='$pavarde',`teises_id`=$teises_id WHERE ID = $id";
 
         if(mysqli_query($conn, $sql)) {
             $message =  "Vartotojas redaguotas sėkmingai";
@@ -76,12 +81,12 @@ if(isset($_GET["submit"])) {
         }
     } else {
         $id = $client["ID"];
-        $vardas = $client["Vardas"];
-        $pavarde = $client["Pavarde"];
+        $vardas = $client["vardas"];
+        $pavarde = $client["pavarde"];
         $teises_id = intval($client["Teises_ID"]);
 
-        $sql = "UPDATE `klientai` SET `Vardas`='$vardas',
-        `Pavarde`='$pavarde',`Teises_ID`=$teises_id WHERE ID = $id";
+        $sql = "UPDATE `klientai` SET `vardas`='$vardas',
+        `pavarde`='$pavarde',`Teises_ID`=$teises_id WHERE ID = $id";
 
         if(mysqli_query($conn, $sql)) {
             $message =  "Vartotojas redaguotas sėkmingai";
@@ -92,33 +97,58 @@ if(isset($_GET["submit"])) {
         }
     }
 }
-
 ?>
 
 <div class="container">
-        <h1>Vartotojo redagavimas</h1>
-        <?php if($hideForm == false) { ?>
-            <form action="clientsEdit.php" method="get">
+    <h1>Vartotojo redagavimas</h1>
+    <?php if($hideForm == false) { ?>
+        <form action="editClients.php" method="get">
                 
-                <input class="hide" type="text" name="ID" value ="<?php echo $client["ID"]; ?>" />
+        <input class="hide" type="text" name="ID" value ="<?php echo $client["ID"]; ?>" />
 
-                <div class="form-group">
-                    <label for="Vardas">Vardas</label>
-                    <input class="form-control" type="text" name="Vardas" value="<?php echo $client["Vardas"]; ?>" />
-                </div>
-                <div class="form-group">
-                    <label for="Pavarde">Pavardė</label>
-                    <input class="form-control" type="text" name="Pavarde" value="<?php echo $client["Pavarde"]; ?>"/>
+        <div class="form-group">
+            <label for="vardas">Vardas</label>
+            <input class="form-control" type="text" name="vardas" value="<?php echo $client["vardas"]; ?>"/>
+        </div>
+
+        <div class="form-group">
+            <label for="pavarde">Pavardė</label>
+            <input class="form-control" type="text" name="pavarde" value="<?php echo $client["pavarde"]; ?>"/>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="teises_id">Teisės</label>
+        <!--<input class="form-control" type="text" name="Teises_ID" value="<?php echo $client["teises_id"]; ?>"/>-->
+        
+        <?php //echo $client["Teises_ID"]; ?>
+                    
+
+        <select class="form-control" name="teises_id">
+            <?php 
+                $sql = "SELECT * FROM klientai_teises";
+                $result = $conn->query($sql);
+                        
+                while($clientRights = mysqli_fetch_array($result)) {
+
+                    if($client["teises_id"] == $clientRights["reiksme"] ) {
+                        echo "<option value='".$clientRights["reiksme"]."' selected='true'>";
+                        }  else {
+                        echo "<option value='".$clientRights["reiksme"]."'>";
+                        }  
+                                
+                        echo $clientRights["pavadinimas"];
+                        echo "</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="Teises_ID">Teisės</label>
-                    <input class="form-control" type="text" name="Teises_ID" value="<?php echo $client["Teises_ID"]; ?>"/>
-                </div>
-
-                <a href="clients.php">Back</a><br>
-                <button class="btn btn-primary" type="submit" name="submit">Edit</button>
-            </form>
+        <a href="clients.php">Back</a><br>
+        <button class="btn btn-primary" type="submit" name="submit">Edit</button>
+    
+    </form>
+        
             <?php if(isset($message)) { ?>
                 <div class="alert alert-<?php echo $class; ?>" role="alert">
                 <?php echo $message; ?>
