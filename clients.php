@@ -96,6 +96,7 @@ if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
     } else {
         $rikiavimas = "DESC"; // nuo didziausio 
     }
+    
 
     $sql = "SELECT * FROM `klientai` ORDER BY `ID` $rikiavimas"; 
 

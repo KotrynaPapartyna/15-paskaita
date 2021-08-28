@@ -22,9 +22,13 @@
             $vardas = "vardas".$i;
             $pavarde = "pavarde".$i;
             $teises_id = rand(0, 5);
+            $aprasymas="aprasymas"; 
+            $imones_id= rand(0,10); 
 
-        $sql = "INSERT INTO `klientai`(`vardas`, `pavarde`, `teises_id`) 
-            VALUES ('$vardas','$pavarde','$teises_id')";
+
+        $sql = "INSERT INTO `klientai`(`vardas`, `pavarde`, `teises_id`, 
+        `aprasymas`, `imones_id`) 
+            VALUES ('$vardas','$pavarde','$teises_id','$aprasymas', '$imones_id')";
 
             if(mysqli_query($conn, $sql)) {
                 echo "Vartotojas sukurtas sekmingai";
