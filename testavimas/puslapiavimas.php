@@ -39,6 +39,11 @@
         LIMIT $page_limit , 15
         ";
 
+        // mysqli_fetch_array- duomenu bazes irasus pavercia i masyva
+        // irasa pavercia i eilute
+        // kol yra irasu- atlikt sia funkcija (paversk i masyva)
+        // kuri atvaizduojama lenteleje
+        // funkcija dazniausiai naudojama atvaizdavimui
         $result = $conn->query($sql); 
         while($clients = mysqli_fetch_array($result)) {
             echo "<tr>";

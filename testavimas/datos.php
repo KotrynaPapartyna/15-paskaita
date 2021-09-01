@@ -53,7 +53,7 @@ if(isset($_GET["submit"])) {
 
         // $sql = "UPDATE `uzsiregistrave_vartotojai` SET `prisijungimo_data`='$formated_date_1' 
         // WHERE `slapyvardis`='$username'";
-        $sql = "UPDATE `uzsiregistrave vartotojai` SET `prisijungimo_data`='1996-05-15'
+        $sql = "UPDATE `uzsiregistrave vartotojai` SET `prisijungimo_data`=$now_date
         WHERE `slapyvardis`='$username'";
 
 
