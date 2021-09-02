@@ -33,7 +33,7 @@
 <body>
 
 <?php 
-
+// veikia 
 if (isset($_COOKIE["prisijungta"])) {
     header("Location:index.php"); 
 }

@@ -26,6 +26,9 @@
 </head>
 <body>
     <?php
+
+    // redagavima ir trynimas veikia 
+    
     //Klientu valdymas + vartotoju valdymas
 
     //1. Prisijungimas naudojant duomenu baze
