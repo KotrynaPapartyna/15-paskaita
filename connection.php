@@ -13,8 +13,11 @@ $duomenu_bazes_slaptazodis,$duomenu_bazes_pavadinimas);
 if(!$conn) {
     die("Nepavyko prisijungti prie duomenu bazes". mysqli_connect_error());
 
+
 //} else {
     //echo "prisijungimas ivyko sekmingai"; 
 }
+// reikalinga eilute tam, kad is DB imama info butu LT kalba, kaip nustatyta DB
+mysqli_set_charset($conn,"utf8");
 
 ?>

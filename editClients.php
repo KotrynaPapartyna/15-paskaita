@@ -34,9 +34,9 @@
 
 <?php 
 
-    if (isset($_COOKIE["prisijungta"])) {
-        header ("Location:index.php");
-    }
+    //if (isset($_COOKIE["prisijungta"])) {
+        //header ("Location:index.php");
+    //}
 
 //mes pagal ID turetume isvesti visus duomenis i input apie klienta
 //ir naujus duomenis per UPDATE sukelti i duomenu baze
