@@ -30,6 +30,9 @@
 
 
 <?php 
+
+// registracija veikia 
+
     if(isset($_GET["submit"])) { 
        // atlikti tikrinima del uzpildymo
 
